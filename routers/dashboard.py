@@ -36,7 +36,10 @@ async def get_blogs_matching_users_tags(
     user_tags = users_collection.find_one({"username": user.get("username")})["tags"]
 
     blogs_matching_tags = list_serializer(
-        blog_collection.find({"tags": {"$in": user_tags}}).sort(sort_by, sort_direction).skip(skip).limit(limit)
+        blog_collection.find({"tags": {"$in": user_tags}})
+        .sort(sort_by, sort_direction)
+        .skip(skip)
+        .limit(limit)
     )
 
     return blogs_matching_tags
@@ -55,7 +58,10 @@ async def get_all_blogs_with_tag(
     skip = (page - 1) * limit
 
     blogs_with_tags = list_serializer(
-        blog_collection.find({"tags": tag}).sort(sort_by, sort_direction).skip(skip).limit(limit)
+        blog_collection.find({"tags": tag})
+        .sort(sort_by, sort_direction)
+        .skip(skip)
+        .limit(limit)
     )
 
     return blogs_with_tags

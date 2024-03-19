@@ -111,7 +111,8 @@ async def update_blog(user: user_dependency, blog_request: BlogRequest, blog_id:
 
         if user is None or blog["owner_id"] != user.get("id"):
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="You are not authorized to perform this action."
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not authorized to perform this action.",
             )
 
         updated_blog_data = dict(blog_request)
@@ -136,7 +137,8 @@ async def delete_blog(user: user_dependency, blog_id: str):
         blog = blog_collection.find_one({"_id": ObjectId(blog_id)})
         if user is None or blog["owner_id"] != user.get("id"):
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="You are not authorized to perform this action."
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You are not authorized to perform this action.",
             )
 
         blog_collection.find_one_and_delete({"_id": ObjectId(blog_id)})
