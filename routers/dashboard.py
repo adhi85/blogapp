@@ -5,7 +5,7 @@ from schema.schemas import list_serializer
 from routers.auth import get_current_user
 from database import blog_collection, users_collection
 
-router = APIRouter(prefix="/dashboard", tags=["dashboard"])
+router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
 user_dependency = Annotated[dict, Depends(get_current_user)]
 
 """

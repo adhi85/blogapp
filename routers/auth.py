@@ -10,7 +10,7 @@ from jose import JWTError, jwt
 from dotenv import load_dotenv
 import os
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 load_dotenv()
 

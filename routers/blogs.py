@@ -8,7 +8,7 @@ from bson import ObjectId
 from models.blogs_model import BlogRequest
 from .auth import get_current_user
 
-router = APIRouter(prefix="/blogs", tags=["blogs"])
+router = APIRouter(prefix="/api/blogs", tags=["blogs"])
 
 user_dependency = Annotated[dict, Depends(get_current_user)]
 

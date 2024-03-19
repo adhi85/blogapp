@@ -9,7 +9,7 @@ from bson import ObjectId
 from schema.schemas import individual_serializer_user, list_serializer_user
 
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(prefix="/api/users", tags=["users"])
 
 user_dependency = Annotated[dict, Depends(get_current_user)]
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

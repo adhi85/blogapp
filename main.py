@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from routers import blogs, auth, users, dashboard
 
 app = FastAPI(
-    prefix="/api",
     title="Blog API",
     description="A blogapp API",
 )
