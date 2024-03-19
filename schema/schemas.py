@@ -5,6 +5,11 @@ from database import users_collection
 # individual_serializer will take a single blog and return a dictionary with the blog details
 def individual_serializer_blog(blog) -> dict:
     user = users_collection.find_one({"_id": ObjectId(blog["owner_id"])})
+
+    if user is None:
+        owner = "Deleted-User"
+    else:
+        owner = user["username"]
     return {
         "id": str(blog["_id"]),
         "title": blog["title"],
@@ -12,7 +17,7 @@ def individual_serializer_blog(blog) -> dict:
         "created_at": blog["created_at"],
         "updated_at": blog["updated_at"],
         "tags": blog["tags"],
-        "owner": user["username"],
+        "owner": owner,
     }
 
 

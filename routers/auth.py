@@ -21,7 +21,7 @@ ALGORITHM = os.getenv("ALGORITHM")
 # bcrypt_context is an instance of CryptContext that will be used to hash the password
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # oauth2_bearer is an instance of OAuth2PasswordBearer that will be used to authenticate the user
-oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/login")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="api/auth/login")
 
 
 # get_current_user is a dependency that will be used to authenticate the user
