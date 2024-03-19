@@ -5,6 +5,7 @@ You can access the APIs [here](https://blogapp-0mno.onrender.com/docs).
 ## Setup Locally
 ### Using virtualenv
 - Clone the repo `git clone https://github.com/adhi85/blogapp.git`
+- make new `.env` file and refer to `.env.example` file to fill it.
 - Use virtualenv to install the requirements  
         ``pip install virtualenv``   
        ``virtualenv myenv ``  
@@ -15,8 +16,9 @@ You can access the APIs [here](https://blogapp-0mno.onrender.com/docs).
 
 ### By Docker
 - Clone the repo
-- docker build -t blogapp .
-- docker run -p 80:80 blogapp
+- Make new `.env` file and refer to `.env.example` file to fill it.
+- `docker build -t blogapp .`
+- `docker run -p 80:80 blogapp`
 - Access at `localhost:80/docs`
 
 ## API Endpoints:
@@ -27,7 +29,7 @@ You can access the APIs [here](https://blogapp-0mno.onrender.com/docs).
 4. Add/remove user tags
 5. Get current user info
 6. Change password
-#### 1.1 Only for admin users (Role based Authorization)
+#### 1.1 Only for users with 'admin' role. (Role based Authorization)
 1. Get all Users
 2. Delete any user
 
