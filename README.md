@@ -1,6 +1,6 @@
 # Blog API
-
-You can access the APIs [here](https://blogapp-0mno.onrender.com/docs).
+Every Endpoints are documented using SwaggerUI.
+You can access the APIs [here](https://blogapp-0mno.onrender.com/docs). Please wait atleast 1-1.5 minutes for loading.
 
 ## Setup Locally
 ### Using virtualenv
@@ -12,7 +12,7 @@ You can access the APIs [here](https://blogapp-0mno.onrender.com/docs).
        ``myenv\Scripts\activate``
 - Install by ``pip install -r requirements.txt``
 - `uvicorn main:app --reload`
-- Access the APIs at `localhost:8080/docs`
+- Access the APIs at `localhost:8000/docs`
 
 ### By Docker
 - Clone the repo
