@@ -1,25 +1,27 @@
 # Blog API
-Every Endpoints are documented using SwaggerUI.
+Every Endpoints are documented using SwaggerUI.  
 You can access the APIs [here](https://blogapp-0mno.onrender.com/docs). Please wait atleast 1-1.5 minutes for loading.
 
 ## Setup Locally
 ### Using virtualenv
 - Clone the repo `git clone https://github.com/adhi85/blogapp.git`
-- make new `.env` file and refer to `.env.example` file to fill it.
+- Change directory: `cd blogapp`
+- Create a new `.env` file and refer to `.env.example` file to fill it.
 - Use virtualenv to install the requirements  
         ``pip install virtualenv``   
        ``virtualenv myenv ``  
        ``myenv\Scripts\activate``
 - Install by ``pip install -r requirements.txt``
 - `uvicorn main:app --reload`
-- Access the APIs at `localhost:8000/docs`
+- Access the APIs at [here](http://localhost:8000/docs) `localhost:8000/docs`
 
 ### By Docker
-- Clone the repo
+- Clone the repo: `git clone https://github.com/adhi85/blogapp.git`
+- Change directory: `cd blogapp`
 - Make new `.env` file and refer to `.env.example` file to fill it.
-- `docker build -t blogapp .`
-- `docker run -p 80:80 blogapp`
-- Access at `localhost:80/docs`
+- Build the image: `docker build -t blogapp .`
+- Run the container: `docker run -p 80:80 blogapp`
+- Access at [here](http://localhost:80/docs/) `localhost:80/docs`
 
 ## API Endpoints:
 ### 1. Authentication
@@ -45,4 +47,14 @@ You can access the APIs [here](https://blogapp-0mno.onrender.com/docs). Please w
 1. Fetch all blogs matching user's followed tags
 2. Fetch all blogs with a specific tag
 
-
+## Security and Performance Measures Followed
+1. Password Hashing: Uses passlib to hash passwords and securely store in the database.
+2. Implemented Password validation constraints like minimum length, atleast one Uppercase,numbers etc.
+3. Dependency Injection: To ensure that only authenticated users can perform the actions like creating, updating, and deleting blogs.
+4. Pagination:  Limits the number of results returned per request to prevent excessive data retrieval and potential denial-of-service attacks.
+5. Authorization: Check whether the authenticated user is the owner of the blog being manipulated, If not returns a 401 Unauthorized error.
+6. JWT (JSON Web Tokens) Authentication.
+7. Role-Based Access Control: During registration, the app validates that the role provided by the user is either 'admin' or 'user' to help prevent unauthorized access.
+8. Protection Against Username and Email Duplication.
+9. Error Handling: The application handles errors gracefully, returning appropriate HTTP status codes and error messages.
+10. Data Protection: Only authorized users can access or modify the user data.
