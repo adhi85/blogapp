@@ -16,36 +16,6 @@ bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 """
-ADMIN ENDPOINTS
-only user with role admin can access these endpoints
-"""
-
-
-@router.get("/adminuser/all_users", status_code=status.HTTP_200_OK)
-async def get_all_users(user: user_dependency):
-    if user is None or user.get("user_role") != "admin":
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="You have to be an admin to perform this operation.",
-        )
-
-    user_obj = users_collection.find()
-    return list_serializer_user(user_obj)
-
-
-@router.delete("/adminuser/delete/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_user(user: user_dependency, user_id: str):
-    if user is None or user.get("user_role") != "admin":
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="You have to be an admin to perform this operation.",
-        )
-
-    users_collection.delete_one({"_id": ObjectId(user_id)})
-    return {"message": "User deleted successfully"}
-
-
-"""
 USER ENDPOINTS
 all users can access these endpoints
 """
