@@ -1,4 +1,4 @@
-from typing import Annotated, List, Optional
+from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
 from schema.schemas import list_serializer
@@ -17,7 +17,7 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 
 
 @router.get("/blogs", status_code=status.HTTP_200_OK)
-async def get_blogs_matching_tags(
+async def get_blogs_matching_users_tags(
     user: user_dependency,
     limit: Optional[int] = 10,
     offset: Optional[int] = 0,
@@ -40,3 +40,22 @@ async def get_blogs_matching_tags(
     blogs_matching_tags = blogs_matching_tags[offset : offset + limit]
 
     return blogs_matching_tags
+
+
+@router.get("/blogs/{tag}", status_code=status.HTTP_200_OK)
+async def get_all_blogs_with_tag(
+    tag: str,
+    limit: Optional[int] = 10,
+    offset: Optional[int] = 0,
+    sort_by: Optional[str] = "created_at",
+    sort_order: Optional[str] = "desc",
+):
+    sort_direction = -1 if sort_order == "desc" else 1
+
+    blogs_with_tags = list_serializer(
+        blog_collection.find({"tags": tag}).sort(sort_by, sort_direction)
+    )
+
+    blogs_with_tags = blogs_with_tags[offset : offset + limit]
+
+    return blogs_with_tags

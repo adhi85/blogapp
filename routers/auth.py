@@ -18,7 +18,9 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 
+# bcrypt_context is an instance of CryptContext that will be used to hash the password
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# oauth2_bearer is an instance of OAuth2PasswordBearer that will be used to authenticate the user
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 
@@ -95,9 +97,11 @@ def create_access_token(
     return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
-#  login_for_access_token will return the access token for the user
+# login_for_access_token will return the access token for the user
+# OAuth2PasswordRequestForm is a form that will be used to get the username and password
 @router.post("/login", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    # async def login_for_access_token(form_data: LoginRequest):
 
     user = authenticate_user(form_data.username, form_data.password)
 

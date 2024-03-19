@@ -29,6 +29,9 @@ class CreateUserRequest(BaseModel):
     def password_validation(cls, v):
         return validate_password(cls, v)
 
+class LoginRequest(BaseModel):
+    username: str
+    password: str
 
 # UpdateUserRequest is a class that will be used to validate the request body when updating a user
 class UpdateUserRequest(BaseModel):
