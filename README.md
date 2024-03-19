@@ -34,6 +34,7 @@ You can access the APIs [here](https://blogapp-0mno.onrender.com/docs). Please w
 #### 1.1 Only for users with 'admin' role. (Role based Authorization)
 1. Get all Users
 2. Delete any user
+3. Delete any blog
 
 ### 2. Blogs
 1. Create new blogs
