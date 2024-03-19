@@ -14,31 +14,34 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 
 
 # read_all is a route that will return all the blogs in the database
+# sorted such that the most recently created blogs appear first and paginated to limit the results
 @router.get("/", status_code=status.HTTP_200_OK)
 async def read_all(
     limit: Optional[int] = 10,
-    offset: Optional[int] = 0,
+    page: Optional[int] = 1,
     sort_by: Optional[str] = "created_at",
     sort_order: Optional[str] = "desc",
 ):
     # Define default values for sorting
     sort_direction = -1 if sort_order == "desc" else 1
 
-    # Sort by the specified field if provided
-    blogs = list_serializer(blog_collection.find().sort(sort_by, sort_direction))
+    skip = (page - 1) * limit
 
-    # Apply pagination
-    blogs = blogs[offset : offset + limit]
+    # Sort by the specified field if provided and skip and limit the results to apply pagination
+    blogs = list_serializer(
+        blog_collection.find().sort(sort_by, sort_direction).skip(skip).limit(limit)
+    )
 
     return blogs
 
 
 # read_my_blogs is a route that will return all the blogs that belong to the authenticated user
+# sorted such that the most recently updated blogs appear first and paginated to limit the results
 @router.get("/myblogs", status_code=status.HTTP_200_OK)
 async def read_my_blogs(
     user: user_dependency,
     limit: Optional[int] = 10,
-    offset: Optional[int] = 0,
+    page: Optional[int] = 1,
     sort_by: Optional[str] = "updated_at",
     sort_order: Optional[str] = "desc",
 ):
@@ -49,12 +52,14 @@ async def read_my_blogs(
 
     sort_direction = -1 if sort_order == "desc" else 1
 
-    blogs = list_serializer(
-        blog_collection.find({"owner_id": user.get("id")}).sort(sort_by, sort_direction)
-    )
+    skip = (page - 1) * limit
 
-    # Apply pagination
-    blogs = blogs[offset : offset + limit]
+    blogs = list_serializer(
+        blog_collection.find({"owner_id": user.get("id")})
+        .sort(sort_by, sort_direction)
+        .skip(skip)
+        .limit(limit)
+    )
 
     return blogs
 
@@ -106,7 +111,7 @@ async def update_blog(user: user_dependency, blog_request: BlogRequest, blog_id:
 
         if user is None or blog["owner_id"] != user.get("id"):
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="You are not authorized to perform this action."
             )
 
         updated_blog_data = dict(blog_request)
@@ -115,7 +120,6 @@ async def update_blog(user: user_dependency, blog_request: BlogRequest, blog_id:
             {"_id": ObjectId(blog_id)}, {"$set": dict(updated_blog_data)}
         )
 
-        return {"message": "Blog updated successfully"}
     except HTTPException as e:
         raise e
     except:
@@ -132,7 +136,7 @@ async def delete_blog(user: user_dependency, blog_id: str):
         blog = blog_collection.find_one({"_id": ObjectId(blog_id)})
         if user is None or blog["owner_id"] != user.get("id"):
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="You are not authorized to perform this action."
             )
 
         blog_collection.find_one_and_delete({"_id": ObjectId(blog_id)})
@@ -142,5 +146,3 @@ async def delete_blog(user: user_dependency, blog_id: str):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Blog not found"
         )
-
-    return {"message": "Blog deleted successfully"}

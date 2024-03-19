@@ -20,7 +20,7 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 async def get_blogs_matching_users_tags(
     user: user_dependency,
     limit: Optional[int] = 10,
-    offset: Optional[int] = 0,
+    page: Optional[int] = 1,
     sort_by: Optional[str] = "created_at",
     sort_order: Optional[str] = "desc",
 ):
@@ -31,13 +31,13 @@ async def get_blogs_matching_users_tags(
 
     sort_direction = -1 if sort_order == "desc" else 1
 
+    skip = (page - 1) * limit
+
     user_tags = users_collection.find_one({"username": user.get("username")})["tags"]
 
     blogs_matching_tags = list_serializer(
-        blog_collection.find({"tags": {"$in": user_tags}}).sort(sort_by, sort_direction)
+        blog_collection.find({"tags": {"$in": user_tags}}).sort(sort_by, sort_direction).skip(skip).limit(limit)
     )
-
-    blogs_matching_tags = blogs_matching_tags[offset : offset + limit]
 
     return blogs_matching_tags
 
@@ -46,16 +46,16 @@ async def get_blogs_matching_users_tags(
 async def get_all_blogs_with_tag(
     tag: str,
     limit: Optional[int] = 10,
-    offset: Optional[int] = 0,
+    page: Optional[int] = 1,
     sort_by: Optional[str] = "created_at",
     sort_order: Optional[str] = "desc",
 ):
     sort_direction = -1 if sort_order == "desc" else 1
 
-    blogs_with_tags = list_serializer(
-        blog_collection.find({"tags": tag}).sort(sort_by, sort_direction)
-    )
+    skip = (page - 1) * limit
 
-    blogs_with_tags = blogs_with_tags[offset : offset + limit]
+    blogs_with_tags = list_serializer(
+        blog_collection.find({"tags": tag}).sort(sort_by, sort_direction).skip(skip).limit(limit)
+    )
 
     return blogs_with_tags

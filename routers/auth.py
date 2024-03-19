@@ -46,8 +46,8 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
 
 
 # create_user will create a new user in the database
-@router.post("/", status_code=status.HTTP_201_CREATED)
-async def create_user(create_user_request: CreateUserRequest):
+@router.post("/register", status_code=status.HTTP_201_CREATED)
+async def register_user(create_user_request: CreateUserRequest):
 
     valid_roles = {"admin", "user"}
 
