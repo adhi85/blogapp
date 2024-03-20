@@ -1,12 +1,13 @@
 # Blog API
 Every Endpoints are documented using SwaggerUI.  
-You can access the APIs [here](https://blogapp-0mno.onrender.com/docs). Please wait atleast 1-1.5 minutes for loading.
+You can access the APIs [here](http://ec2-13-127-109-197.ap-south-1.compute.amazonaws.com/docs) or [here](https://blogapp-0mno.onrender.com/docs).   
+Tech-Stack used:  Python, FastAPI, Pydantic, MongoDB, Docker, AWS, Render.
 
 ## Setup Locally
 ### Using virtualenv
 - Clone the repo `git clone https://github.com/adhi85/blogapp.git`
 - Change directory: `cd blogapp`
-- Create a new `.env` file and refer to `.env.example` file to fill it.
+- Create a new `.env` file and refer to `.env.example` file to fill it. (Use MongoDB as Database)
 - Use virtualenv to install the requirements  
         ``pip install virtualenv``   
        ``virtualenv myenv ``  
@@ -18,7 +19,7 @@ You can access the APIs [here](https://blogapp-0mno.onrender.com/docs). Please w
 ### By Docker
 - Clone the repo: `git clone https://github.com/adhi85/blogapp.git`
 - Change directory: `cd blogapp`
-- Make new `.env` file and refer to `.env.example` file to fill it.
+- Make new `.env` file and refer to `.env.example` file to fill it. (Use MongoDB as Database)
 - Build the image: `docker build -t blogapp .`
 - Run the container: `docker run -p 80:80 blogapp`
 - Access at [here](http://localhost:80/docs/) `localhost:80/docs`
@@ -31,7 +32,7 @@ You can access the APIs [here](https://blogapp-0mno.onrender.com/docs). Please w
 4. Add/remove user tags
 5. Get current user info
 6. Change password
-#### 1.1 Only for users with 'admin' role. (Role based Authorization)
+#### 1.1 Only for users with __*'admin'*__ role. (Role based Access Control)
 1. Get all Users
 2. Delete any user
 3. Delete any blog
