@@ -1,12 +1,13 @@
 # Blog API
 Every Endpoints are documented using SwaggerUI.  
-You can access the APIs [here](https://blogapp-0mno.onrender.com/docs). Please wait atleast 1-1.5 minutes for loading.
+You can access the APIs [here](https://blogapp-0mno.onrender.com/docs). Please wait atleast 1-1.5 minutes for loading.  
+Tech-Stack used:  Python, FastAPI, Pydantic, MongoDB, Docker.
 
 ## Setup Locally
 ### Using virtualenv
 - Clone the repo `git clone https://github.com/adhi85/blogapp.git`
 - Change directory: `cd blogapp`
-- Create a new `.env` file and refer to `.env.example` file to fill it.
+- Create a new `.env` file and refer to `.env.example` file to fill it. (Use MongoDB as Database)
 - Use virtualenv to install the requirements  
         ``pip install virtualenv``   
        ``virtualenv myenv ``  
@@ -18,7 +19,7 @@ You can access the APIs [here](https://blogapp-0mno.onrender.com/docs). Please w
 ### By Docker
 - Clone the repo: `git clone https://github.com/adhi85/blogapp.git`
 - Change directory: `cd blogapp`
-- Make new `.env` file and refer to `.env.example` file to fill it.
+- Make new `.env` file and refer to `.env.example` file to fill it. (Use MongoDB as Database)
 - Build the image: `docker build -t blogapp .`
 - Run the container: `docker run -p 80:80 blogapp`
 - Access at [here](http://localhost:80/docs/) `localhost:80/docs`
