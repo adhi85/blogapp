@@ -1,7 +1,7 @@
 # Blog API
 Every Endpoints are documented using SwaggerUI.  
 You can access the APIs [here](http://ec2-13-127-109-197.ap-south-1.compute.amazonaws.com/docs) or [here](https://blogapp-0mno.onrender.com/docs).   
-Tech-Stack used:  Python, FastAPI, Pydantic, MongoDB, Docker.
+Tech-Stack used:  Python, FastAPI, Pydantic, MongoDB, Docker, AWS, Render.
 
 ## Setup Locally
 ### Using virtualenv
@@ -32,7 +32,7 @@ Tech-Stack used:  Python, FastAPI, Pydantic, MongoDB, Docker.
 4. Add/remove user tags
 5. Get current user info
 6. Change password
-#### 1.1 Only for users with 'admin' role. (Role based Authorization)
+#### 1.1 Only for users with __*'admin'*__ role. (Role based Access Control)
 1. Get all Users
 2. Delete any user
 3. Delete any blog
