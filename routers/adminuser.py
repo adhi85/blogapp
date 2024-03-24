@@ -23,7 +23,7 @@ async def get_all_users(user: user_dependency):
             detail="You have to be an admin to perform this operation.",
         )
 
-    user_obj = users_collection.find()
+    user_obj = await users_collection.find()
     return list_serializer_user(user_obj)
 
 
@@ -35,7 +35,7 @@ async def delete_any_user(user: user_dependency, user_id: str):
             detail="You have to be an admin to perform this operation.",
         )
 
-    deleting_user = users_collection.find_one({"_id": ObjectId(user_id)})
+    deleting_user = await users_collection.find_one({"_id": ObjectId(user_id)})
     if deleting_user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -54,7 +54,7 @@ async def delete_any_blog(user: user_dependency, blog_id: str):
             detail="You have to be an admin to perform this operation.",
         )
 
-    blog = blog_collection.find_one({"_id": ObjectId(blog_id)})
+    blog = await blog_collection.find_one({"_id": ObjectId(blog_id)})
 
     if blog is None:
         raise HTTPException(

@@ -29,7 +29,7 @@ async def read_all(
 
     # Sort by the specified field if provided and skip and limit the results to apply pagination
     blogs = list_serializer(
-        blog_collection.find().sort(sort_by, sort_direction).skip(skip).limit(limit)
+        await blog_collection.find().sort(sort_by, sort_direction).skip(skip).limit(limit)
     )
 
     return blogs
@@ -55,7 +55,7 @@ async def read_my_blogs(
     skip = (page - 1) * limit
 
     blogs = list_serializer(
-        blog_collection.find({"owner_id": user.get("id")})
+        await blog_collection.find({"owner_id": user.get("id")})
         .sort(sort_by, sort_direction)
         .skip(skip)
         .limit(limit)
@@ -69,7 +69,7 @@ async def read_my_blogs(
 async def read_blog(blog_id: str):
     try:
         blog = individual_serializer_blog(
-            blog_collection.find_one({"_id": ObjectId(blog_id)})
+            await blog_collection.find_one({"_id": ObjectId(blog_id)})
         )
         return blog
     except:
@@ -92,7 +92,7 @@ async def create_blog(user: user_dependency, blog_request: BlogRequest):
     blog["owner_id"] = user.get("id")
     blog["created_at"] = current_time
     blog["updated_at"] = current_time
-    blog_collection.insert_one(blog)
+    await blog_collection.insert_one(blog)
 
     return {"message": "Blog created successfully"}
 
@@ -102,7 +102,7 @@ async def create_blog(user: user_dependency, blog_request: BlogRequest):
 async def update_blog(user: user_dependency, blog_request: BlogRequest, blog_id: str):
 
     try:
-        blog = blog_collection.find_one({"_id": ObjectId(blog_id)})
+        blog = await blog_collection.find_one({"_id": ObjectId(blog_id)})
 
         if not blog:
             raise HTTPException(
@@ -117,7 +117,7 @@ async def update_blog(user: user_dependency, blog_request: BlogRequest, blog_id:
 
         updated_blog_data = dict(blog_request)
         updated_blog_data["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        blog_collection.find_one_and_update(
+        await blog_collection.find_one_and_update(
             {"_id": ObjectId(blog_id)}, {"$set": dict(updated_blog_data)}
         )
 
@@ -134,14 +134,14 @@ async def update_blog(user: user_dependency, blog_request: BlogRequest, blog_id:
 async def delete_blog(user: user_dependency, blog_id: str):
 
     try:
-        blog = blog_collection.find_one({"_id": ObjectId(blog_id)})
+        blog = await blog_collection.find_one({"_id": ObjectId(blog_id)})
         if user is None or blog["owner_id"] != user.get("id"):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="You are not authorized to perform this action.",
             )
 
-        blog_collection.find_one_and_delete({"_id": ObjectId(blog_id)})
+        await blog_collection.find_one_and_delete({"_id": ObjectId(blog_id)})
     except HTTPException as e:
         raise e
     except:
