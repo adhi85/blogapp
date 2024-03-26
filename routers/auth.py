@@ -59,11 +59,11 @@ async def register_user(create_user_request: CreateUserRequest):
 
     user_obj = dict(create_user_request)
 
-    if await users_collection.find_one({"username": user_obj["username"]}):
+    if users_collection.find_one({"username": user_obj["username"]}):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists"
         )
-    if await users_collection.find_one({"email": user_obj["email"]}):
+    if users_collection.find_one({"email": user_obj["email"]}):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists"
         )
@@ -71,14 +71,14 @@ async def register_user(create_user_request: CreateUserRequest):
     hashed_password = bcrypt_context.hash(user_obj["password"])
     user_obj["password"] = hashed_password
 
-    await users_collection.insert_one(user_obj)
+    users_collection.insert_one(user_obj)
 
     return {"message": "User created successfully"}
 
 
 # authenticate_user will authenticate the user using the username and password
-async def authenticate_user(username: str, password: str):
-    user = await users_collection.find_one({"username": username})
+def authenticate_user(username: str, password: str):
+    user = users_collection.find_one({"username": username})
     if not user:
         return False
     if not bcrypt_context.verify(password, user["password"]):

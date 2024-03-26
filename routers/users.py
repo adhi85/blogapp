@@ -29,7 +29,7 @@ async def get_current_user_info(user: user_dependency):
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication Failed"
         )
     user_obj = individual_serializer_user(
-        await users_collection.find_one({"username": user.get("username")})
+        users_collection.find_one({"username": user.get("username")})
     )
 
     return user_obj
@@ -41,14 +41,14 @@ async def change_password(user: user_dependency, user_verification: PasswordChan
     if user is None:
         raise HTTPException(status_code=401, detail="Authentication failed")
 
-    user_obj = await users_collection.find_one({"username": user.get("username")})
+    user_obj = users_collection.find_one({"username": user.get("username")})
 
     if not bcrypt_context.verify(user_verification.password, user_obj["password"]):
         raise HTTPException(status_code=401, detail="Current Password is wrong")
 
     user_obj["password"] = bcrypt_context.hash(user_verification.new_password)
 
-    await users_collection.find_one_and_replace({"username": user.get("username")}, user_obj)
+    users_collection.find_one_and_replace({"username": user.get("username")}, user_obj)
 
 
 # update_user_info is a route that will update the user's information in the database
@@ -57,7 +57,7 @@ async def update_user_info(user: user_dependency, user_verification: UpdateUserR
     if user is None:
         raise HTTPException(status_code=401, detail="Authentication failed")
 
-    await users_collection.find_one_and_update(
+    users_collection.find_one_and_update(
         {"_id": ObjectId(user.get("id"))}, {"$set": dict(user_verification)}
     )
     return {"message": "User updated successfully"}
@@ -71,7 +71,7 @@ async def add_tags_to_user(user: user_dependency, tags: List[str]):
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
         )
 
-    await users_collection.update_one(
+    users_collection.update_one(
         {"_id": ObjectId(user.get("id"))}, {"$addToSet": {"tags": {"$each": tags}}}
     )
     return {"message": "Tags added successfully"}
@@ -85,7 +85,7 @@ async def remove_tags_from_user(user: user_dependency, tags: List[str]):
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
         )
 
-    await users_collection.update_one(
+    users_collection.update_one(
         {"_id": ObjectId(user.get("id"))}, {"$pullAll": {"tags": tags}}
     )
 
