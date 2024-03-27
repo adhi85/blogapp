@@ -1,6 +1,6 @@
 # Blog API
 - Every Endpoints are documented using SwaggerUI.  
-- You can access the deployed APIs here. [AWS](http://ec2-13-127-109-197.ap-south-1.compute.amazonaws.com/docs) or [Render](https://blogapp-0mno.onrender.com/docs). It may take 1-1.5 minutes for loading since it is hosted in Render.   
+- You can access the deployed APIs [here](https://blogapp-0mno.onrender.com/docs). It may take 1-1.5 minutes for loading since it is hosted in Render.   
 - Tech-Stack used:  Python, FastAPI, Pydantic, MongoDB, Docker, AWS, Render.
 
 ## How to Setup Locally
